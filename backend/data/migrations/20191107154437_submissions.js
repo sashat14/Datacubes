@@ -3,7 +3,7 @@ exports.up = function(knex) {
     return knex.schema.createTable('submissions', tbl => {
         tbl.increments().unique().notNullable().primary()
 
-        tbl.integer('company_id').unsigned()
+        tbl.integer('company_id').unsigned().notNullable()
         tbl.foreign('company_id').references('id').inTable('companies')
 
         tbl.string('notes')

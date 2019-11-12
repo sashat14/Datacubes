@@ -3,7 +3,7 @@ exports.up = function(knex) {
     return knex.schema.createTable('submission_users', tbl => {
         tbl.increments().unique().notNullable().primary()
 
-        tbl.integer('user_id').unsigned()
+        tbl.integer('user_id').unsigned().notNullable()
         tbl.foreign('user_id').references('id').inTable('users')
 
         tbl.integer('submission_id').unsigned()
