@@ -30,16 +30,32 @@ router.route('/')
         })
     })
 
-    .post((req, res) => {
+    .post((req, res, next) => {
         const submission = req.body;
-        db.insert(submission)
-        .into('submissions')
-        .then(submission =>{
-            res.status(201).send('Submission added to database')
+        console.log(submission.company_id)
+        db('companies').where('companies.id', submission.company_id)
+        .then(company => {
+            console.log(company)
+            if(!company.length){
+               res.json({message:"Must provide valid company id"})
+            }
+            else {
+            db.insert(submission)
+            .into('submissions')
+            .then(submission =>{
+                console.log(".then")
+                res.status(201).send('Submission added to database')
+            })
+            .catch(err => {
+                console.log(".catch1")
+                res.send(err.message).status(500).json({error: "Submission was not added to database"})
+            })
+        }
         })
         .catch(err => {
-            res.send(err.message).status(500).json({error: "Submission was not added to database"})
-        })
+            console.log(".catch2")
+            res.send(err.message).status(500)
+        })    
     })
 
 module.exports = router; 

@@ -14,4 +14,17 @@ router.route('/')
         })
     })
 
+    .delete((req, res) => {
+        userId = req.params;
+        db('users')
+        .where(userId)
+        .del()
+        .then(removedUser => {
+            res.status(202).json(removedUser).send('User deleted')
+        })
+        .catch(err => {
+            res.send(err.message).status(500).json({error: 'Unable to delete user'})
+        })
+    })
+
 module.exports = router; 

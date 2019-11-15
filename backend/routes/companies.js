@@ -14,4 +14,18 @@ router.route('/')
         })
     })
 
+    .put((req, res) =>{
+        companyId = req.params;
+        updatedCompany = req.body;
+        db('companies')
+        .where(companyId)
+        .update(updatedCompany)
+        .then(company => {
+            res.status(201).json(item).send('Company updated')
+        })
+        .catch(err => {
+            res.send(err.message).status(500).json({error: 'Unable to update company'})
+        })
+    })
+
 module.exports = router;
